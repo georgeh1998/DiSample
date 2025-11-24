@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "DiSample"
 include(":app")
+include(":my-hilt")
  
