@@ -167,7 +167,7 @@ object MyHilt {
 
             // クラス自体に@Singletonがついている場合はキャッシュ
             if (clazz.isAnnotationPresent(Singleton::class.java)) {
-                singletonScope[clazz] = instance
+                singletonScope[clazz] = instance as Any
             }
             return instance
         }

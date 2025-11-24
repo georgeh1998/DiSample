@@ -37,4 +37,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     // Application Lifecycle access
     implementation(libs.androidx.activity.compose)
+
+    implementation("javax.inject:javax.inject:1")
 }

@@ -14,7 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.github.georgeh1998.disample.ui.theme.DiSampleTheme
 import com.github.georgeh1998.myhilt.annotations.AndroidEntryPoint
 import com.github.georgeh1998.disample.ui.QuoteViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.georgeh1998.myhilt.internal.HiltViewModelFactory
 import androidx.lifecycle.ViewModelProvider
 
