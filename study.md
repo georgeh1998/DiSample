@@ -50,7 +50,8 @@ Hiltの機能を提供するライブラリ部分です。
 
 *   **`di/AppModule.kt`**:
     *   `@Module` と `@InstallIn(SingletonComponent::class)` をつけ、DI設定であることを宣言。
-    *   `@Provides` メソッドで `QuoteRepository` の実装として `QuoteRepositoryImpl` を返すように定義しています。
+    *   `@Binds` メソッドを使い、`QuoteRepository` インターフェースの実装が `QuoteRepositoryImpl` であることを宣言しています。
+    *   `@Binds` は `@Provides` と違い、メソッドの実装を書く必要がなく、インターフェースと実装クラスの紐付けを簡潔に記述できます（抽象メソッドとして定義します）。
 
 *   **`data/QuoteRepositoryImpl.kt`**:
     *   `@Inject constructor()` により、このクラス自体もDIコンテナによって生成可能になっています。

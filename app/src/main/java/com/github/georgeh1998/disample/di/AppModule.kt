@@ -2,9 +2,9 @@ package com.github.georgeh1998.disample.di
 
 import com.github.georgeh1998.disample.data.QuoteRepository
 import com.github.georgeh1998.disample.data.QuoteRepositoryImpl
+import com.github.georgeh1998.myhilt.annotations.Binds
 import com.github.georgeh1998.myhilt.annotations.InstallIn
 import com.github.georgeh1998.myhilt.annotations.Module
-import com.github.georgeh1998.myhilt.annotations.Provides
 import com.github.georgeh1998.myhilt.annotations.Singleton
 import com.github.georgeh1998.myhilt.annotations.SingletonComponent
 
@@ -21,24 +21,22 @@ import com.github.georgeh1998.myhilt.annotations.SingletonComponent
  */
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+interface AppModule {
 
     /**
-     * QuoteRepositoryインターフェースの実装を提供するメソッド。
+     * QuoteRepositoryインターフェースの実装をバインドするメソッド。
      *
-     * アプリ内で `QuoteRepository` が必要になったとき（例えばViewModelのコンストラクタで要求されたとき）、
-     * このメソッドが呼ばれてインスタンスが提供されます。
+     * @Binds を使うことで、@Provides で手動でインスタンスを生成するコードを書かずに、
+     * 「QuoteRepositoryImpl を QuoteRepository として使う」という宣言だけで済みます。
      *
-     * @Provides: インスタンスを提供するメソッドにつけます。
-     * @Singleton: アプリ全体で一つのインスタンスを使い回すことを示します。
-     *             これがないと、要求されるたびに新しいインスタンスが生成されます。
+     * メソッドの引数 (QuoteRepositoryImpl) は、Hiltが自動的に解決（@Inject constructorから生成）します。
+     * 戻り値の型 (QuoteRepository) が、このメソッドが提供する型になります。
+     *
+     * - インターフェースである必要があります。
+     * - 抽象メソッドである必要があります。
+     * - 引数は一つだけ（実装クラス）です。
      */
-    @Provides
+    @Binds
     @Singleton
-    fun provideQuoteRepository(): QuoteRepository {
-        // QuoteRepositoryの実体として QuoteRepositoryImpl を返します。
-        // QuoteRepositoryImpl自体も @Inject コンストラクタを持っているので、
-        // MyHiltが自動生成することも可能ですが、インターフェースへのバインドを明示するためにここで記述しています。
-        return QuoteRepositoryImpl()
-    }
+    fun bindQuoteRepository(impl: QuoteRepositoryImpl): QuoteRepository
 }
