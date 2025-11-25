@@ -33,6 +33,8 @@ android {
 }
 
 dependencies {
+    api(project(":my-hilt-annotations")) // Expose annotations
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     // Application Lifecycle access

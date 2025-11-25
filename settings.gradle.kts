@@ -22,4 +22,6 @@ dependencyResolutionManagement {
 rootProject.name = "DiSample"
 include(":app")
 include(":my-hilt")
+include(":my-hilt-annotations")
+include(":my-hilt-compiler")
  

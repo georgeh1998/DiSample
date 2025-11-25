@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    id("com.github.georgeh1998.myhilt.plugin")
 }
 
 android {
@@ -41,6 +43,7 @@ android {
 
 dependencies {
     implementation(project(":my-hilt"))
+    ksp(project(":my-hilt-compiler"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
