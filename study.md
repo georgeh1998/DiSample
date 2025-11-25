@@ -48,12 +48,19 @@ Hiltの機能を提供するライブラリ部分です。
     *   `@HiltAndroidApp` をつけ、`modules` 引数で使用するモジュールを指定しています。
     *   `MyHilt.init(this)` を呼び出しています（本物のHiltではバイトコード変換で自動で行われます）。
 
-*   **`di/AppModule.kt`**:
-    *   `@Module` と `@InstallIn(SingletonComponent::class)` をつけ、DI設定であることを宣言。
-    *   `@Provides` メソッドで `QuoteRepository` の実装として `QuoteRepositoryImpl` を返すように定義しています。
+*   **`di/AppModule.kt`** (@Providesの例):
+    *   `@Provides` を使用して `QuoteRepository` のインスタンス生成方法を定義しています。
+    *   メソッドの引数として `Logger` を受け取っており、MyHiltが自動的に `Logger` のインスタンスを解決して渡してくれます。
+    *   受け取ったLoggerを使って、手動で `QuoteRepositoryImpl(logger)` を生成しています。
+
+*   **`di/LoggerModule.kt`** (@Bindsの例):
+    *   `@Module` ですが、こちらは `interface` として定義されています。
+    *   `@Binds` を使い、`Logger` インターフェースの実装が `DebugLogger` であることを宣言しています。
+    *   `@Binds` はメソッドの中身を書く必要がなく、より効率的にインターフェースと実装を紐付けられます。
 
 *   **`data/QuoteRepositoryImpl.kt`**:
-    *   `@Inject constructor()` により、このクラス自体もDIコンテナによって生成可能になっています。
+    *   `@Inject constructor(private val logger: Logger)` となり、Loggerへの依存関係が追加されました。
+    *   MyHiltは `LoggerModule` の定義に従って `DebugLogger` を生成し、ここに注入します。
 
 *   **`ui/QuoteViewModel.kt`**:
     *   `@Inject constructor(private val repository: QuoteRepository)` でリポジトリを受け取ります。
