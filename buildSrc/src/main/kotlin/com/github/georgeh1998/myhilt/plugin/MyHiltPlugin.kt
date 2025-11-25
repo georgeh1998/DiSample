@@ -3,6 +3,8 @@ package com.github.georgeh1998.myhilt.plugin
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
+import com.android.build.api.instrumentation.FramesComputationMode
+import com.android.build.api.instrumentation.InstrumentationParameters
 import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AndroidComponentsExtension
 import org.gradle.api.Plugin
@@ -21,12 +23,12 @@ class MyHiltPlugin : Plugin<Project> {
                 InstrumentationScope.PROJECT
             ) {}
             // ASM code runs on frames which is important for class hierarchy changes
-            variant.instrumentation.setAsmFramesComputationEnabled(true)
+            variant.instrumentation.setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
         }
     }
 }
 
-abstract class HiltClassVisitorFactory : AsmClassVisitorFactory<org.gradle.api.provider.ListProperty<String>> {
+abstract class HiltClassVisitorFactory : AsmClassVisitorFactory<InstrumentationParameters.None> {
     override fun createClassVisitor(
         classContext: ClassContext,
         nextClassVisitor: ClassVisitor
