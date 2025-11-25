@@ -46,7 +46,9 @@ Hiltの機能を提供するライブラリ部分です。
 
 *   **`MyApplication.kt`**:
     *   `@HiltAndroidApp` をつけ、`modules` 引数で使用するモジュールを指定しています。
-    *   `MyHilt.init(this)` を呼び出しています（本物のHiltではバイトコード変換で自動で行われます）。
+    *   **改善点**: 以前は `MyHilt.init(this)` を手動で呼んでいましたが、現在は **Custom Gradle Plugin** と **KSP** によって自動化されています。
+    *   **KSP (`my-hilt-compiler`)**: `@HiltAndroidApp` を見て `Hilt_MyApplication` クラス（`onCreate` で `init` を呼ぶクラス）を生成します。
+    *   **ASM (`my-hilt-plugin`)**: バイトコード変換を行い、`MyApplication` の継承元を `Application` から `Hilt_MyApplication` にすり替えます。
 
 *   **`di/AppModule.kt`** (@Providesの例):
     *   `@Provides` を使用して `QuoteRepository` のインスタンス生成方法を定義しています。
