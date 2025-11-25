@@ -1,42 +1,37 @@
 package com.github.georgeh1998.disample.di
 
+import com.github.georgeh1998.disample.data.Logger
 import com.github.georgeh1998.disample.data.QuoteRepository
 import com.github.georgeh1998.disample.data.QuoteRepositoryImpl
-import com.github.georgeh1998.myhilt.annotations.Binds
 import com.github.georgeh1998.myhilt.annotations.InstallIn
 import com.github.georgeh1998.myhilt.annotations.Module
+import com.github.georgeh1998.myhilt.annotations.Provides
 import com.github.georgeh1998.myhilt.annotations.Singleton
 import com.github.georgeh1998.myhilt.annotations.SingletonComponent
 
 /**
- * Hiltモジュール: 依存関係の提供方法を定義する場所
+ * アプリケーション全体の依存関係を定義するモジュール（@Provides版）。
  *
- * インターフェースの実装クラスを提供する場合や、外部ライブラリのクラス（Retrofitなど）を
- * 生成する場合に使用します。
- *
- * @Module: これがDIのモジュールであることを示します。
- * @InstallIn(SingletonComponent::class):
- *    このモジュールで提供されるインスタンスの寿命（スコープ）を定義します。
- *    SingletonComponentは「アプリ全体で有効」という意味です。
+ * @Provides を使用してインスタンスを手動で生成・返却する例です。
+ * 実装クラスが外部ライブラリのもので @Inject をつけられない場合や、
+ * 生成時に複雑な初期化ロジックが必要な場合に使われます。
  */
 @Module
 @InstallIn(SingletonComponent::class)
-interface AppModule {
+object AppModule {
 
     /**
-     * QuoteRepositoryインターフェースの実装をバインドするメソッド。
+     * QuoteRepositoryの実装を提供するメソッド。
      *
-     * @Binds を使うことで、@Provides で手動でインスタンスを生成するコードを書かずに、
-     * 「QuoteRepositoryImpl を QuoteRepository として使う」という宣言だけで済みます。
+     * 引数に `Logger` を指定しています。
+     * MyHiltは `LoggerModule` で定義されたバインディングを使って `Logger` (DebugLogger) を解決し、
+     * ここに渡してくれます。
      *
-     * メソッドの引数 (QuoteRepositoryImpl) は、Hiltが自動的に解決（@Inject constructorから生成）します。
-     * 戻り値の型 (QuoteRepository) が、このメソッドが提供する型になります。
-     *
-     * - インターフェースである必要があります。
-     * - 抽象メソッドである必要があります。
-     * - 引数は一つだけ（実装クラス）です。
+     * 受け取ったLoggerを使って、手動で `QuoteRepositoryImpl` を生成して返しています。
      */
-    @Binds
+    @Provides
     @Singleton
-    fun bindQuoteRepository(impl: QuoteRepositoryImpl): QuoteRepository
+    fun provideQuoteRepository(logger: Logger): QuoteRepository {
+        return QuoteRepositoryImpl(logger)
+    }
 }

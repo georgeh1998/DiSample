@@ -5,15 +5,14 @@ import com.github.georgeh1998.myhilt.annotations.Inject
 /**
  * QuoteRepositoryの実装クラス。
  *
- * @Inject constructor():
- *     このクラスのコンストラクタに @Inject をつけることで、
- *     Hilt（このサンプルではMyHilt）がこのクラスのインスタンス生成方法を知ることができます。
- *
- *     これにより、他の場所で QuoteRepositoryImpl が必要になったときに、
- *     自動的に `new QuoteRepositoryImpl()` 相当の処理が行われます。
+ * コンストラクタで Logger を受け取ります。
+ * MyHiltは LoggerModule を通じて DebugLogger を注入してくれます。
  */
-class QuoteRepositoryImpl @Inject constructor() : QuoteRepository {
+class QuoteRepositoryImpl @Inject constructor(
+    private val logger: Logger
+) : QuoteRepository {
     override fun getQuote(): String {
+        logger.log("Getting quote...")
         return "Life is simpler than you think."
     }
 }
